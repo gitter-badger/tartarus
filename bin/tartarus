@@ -1,7 +1,9 @@
 #!/bin/bash
 #
-# Tartarus by Stefan Tomanek <stefan.tomanek+tartarus@wertarbyte.de>
-#            http://wertarbyte.de/tartarus.shtml
+# Tartarus // Evolution
+#
+# Maintainer: Aleksey Maximov <amaxcz@gmail.com>
+# GitHub fork: https://github.com/amaxcz/tartarus
 #
 # Integrated POD documentation can be viewed with the following command:
 # $ sed -rn 's!^# ?!!p' ./tartarus | pod2text
@@ -11,7 +13,7 @@
 # terms of the GPLv3 or any later version.
 # For full license terms, see COPYING.
 
-readonly VERSION="0.9.8"
+readonly VERSION="0.9.9"
 
 #=pod
 #
@@ -328,7 +330,7 @@ DIRECTORY=""
 # directories residing on different filesystems/partitions. This is especially
 # useful when backing up the root directory /, since you probably do not want to
 # store /proc or /sys.
-STAY_IN_FILESYSTEM="no"
+STAY_IN_FILESYSTEM="yes"
 #
 #=item KPARTX
 #
@@ -380,7 +382,7 @@ LVM_MOUNT_OPTIONS=""
 # as "1G". Make sure your volume group has enough disk space to handle the growing
 # divergence between the origin and the snapshot volume during the backup run. This
 # value defaults to "200m".
-LVM_SNAPSHOT_SIZE="200m"
+LVM_SNAPSHOT_SIZE="300m"
 #
 #
 #=item ASSEMBLY_METHOD
@@ -393,8 +395,7 @@ ASSEMBLY_METHOD="tar"
 #
 #=item TAR_OPTIONS
 #
-# This variable allows additional to be passed to tar. One common value would be
-# I<--ignore-failed-read> to ignore files that disappear during the backup run.
+# This variable allows additional to be passed to tar.
 TAR_OPTIONS=""
 #
 #=item CURL_OPTIONS
@@ -407,7 +408,7 @@ CURL_OPTIONS=""
 #
 # Tartarus can utilize various compression methods to the shrink the processed data
 # before storing it. Leaving the variable blank (which is the default) will disable
-# compression, other known values are "gzip", "bzip2", "pbzip2" and "xz".
+# compression, other known values are "gzip", "bzip2", "pbzip2", "xz", "lzop".
 COMPRESSION_METHOD=""
 #
 #=item STORAGE_METHOD
@@ -567,7 +568,7 @@ LIMIT_DISK_IO="no"
 #
 # Disabling this option will stop Tartarus from checking its website for updates
 # of itself.
-CHECK_FOR_UPDATE="yes"
+CHECK_FOR_UPDATE="no"
 #
 #=item FILE_LIST_CREATION
 #
@@ -673,7 +674,7 @@ constructFilename() {
     if [ -n "${CURRENT_CHUNK:-}" ]; then
         CHUNK=".chunk-$CURRENT_CHUNK"
     fi
-    local FILENAME="tartarus-${NAME}-${DATE}${INC}.${ASSEMBLY_METHOD}${ARCHIVE_EXTENSION:-}${CHUNK}"
+    local FILENAME="${NAME}-${DATE}${INC}.${ASSEMBLY_METHOD}${ARCHIVE_EXTENSION:-}${CHUNK}"
 
     hook FILENAME
     
@@ -690,7 +691,7 @@ case "$ASSEMBLY_METHOD" in
         # use the traditional tar setup
         requireCommand tar || cleanup 1
         collate() {
-            local TAROPTS="--no-unquote --no-recursion $TAR_OPTIONS"
+            local TAROPTS="--no-unquote --no-recursion --ignore-failed-read --sparse --totals $TAR_OPTIONS"
             call tar cpf -  $TAROPTS --null -T -
             local EXITCODE=$?
             # exit code 1 means that some files have changed while backing them
@@ -805,6 +806,11 @@ case "$ASSEMBLY_METHOD" in
             xz)
                 AFIO_OPTIONS="$AFIO_OPTIONS -Z -P xz"
                 ARCHIVE_EXTENSION=".xz"
+            ;;
+            lzop)
+                AFIO_OPTIONS="$AFIO_OPTIONS -Z -P lzop"
+                ARCHIVE_EXTENSION=".xz"
+            ;;
         esac
     ;;
     *)
@@ -836,6 +842,13 @@ case "$ASSEMBLY_METHOD" in
                     xz
                 }
                 ARCHIVE_EXTENSION=".xz"
+            ;;
+            lzop)
+                requireCommand lzop || cleanup 1
+                compression() {
+                    lzop
+                }
+                ARCHIVE_EXTENSION=".lzo"
             ;;
         esac
     ;;
