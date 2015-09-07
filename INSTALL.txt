@@ -1,13 +1,5 @@
-Tartarus - a flexible script based backup system
+Tartarus / Evolution - a flexible script based backup system
 
-by Stefan Tomanek <stefan.tomanek+tartarus@wertarbyte.de>
-
-Thanks for downloading and extracting the tartarus package.  Since you are
-reading this, you for some reason refrained from taking the easy (and
-recommended) road of downloading a Debian package and be done with it.
-
-If you are running a debian based distribution, please consider turning back
-and fetching a readily prepared package from http://wertarbyte.de/apt/
 
 This document describes the manual installation procedure of the tartarus
 suite, which consists of three separate components.
@@ -37,3 +29,5 @@ generation, the command "make" should place them in the directory man/.  The
 files can be copied to the directory /usr/local/share/man/man1/ for easy
 access.
 
+
+Copyright 2008 Stefan Tomanek <stefan.tomanek+tartarus@wertarbyte.de>

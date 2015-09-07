@@ -1,17 +1,19 @@
 #!/bin/bash
 #
 # Tartarus // Evolution
-#
-# Maintainer: Aleksey Maximov <amaxcz@gmail.com>
 # GitHub fork: https://github.com/amaxcz/tartarus
 #
-# Integrated POD documentation can be viewed with the following command:
-# $ sed -rn 's!^# ?!!p' ./tartarus | pod2text
 #
 # Copyright 2008 Stefan Tomanek <stefan.tomanek+tartarus@wertarbyte.de>
 # You have permission to copy, modify, and redistribute under the
 # terms of the GPLv3 or any later version.
 # For full license terms, see COPYING.
+#
+#
+# Integrated POD documentation can be viewed with the following command:
+# $ sed -rn 's!^# ?!!p' ./tartarus | pod2text
+#
+#
 
 readonly VERSION="0.9.9"
 

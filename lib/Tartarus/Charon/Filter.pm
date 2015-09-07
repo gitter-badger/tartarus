@@ -8,7 +8,7 @@ package Tartarus::Charon::Filter;
 
 use Time::Local;
 
-our $filename_re = qr/^tartarus-
+our $filename_re = qr/^
     (.+?)- # profile
     ([0-9]{4}[01][0-9][0-3][0-9]-[012][0-9][0-9]{2}) # date
     (?:\.|-inc-([0-9]{4}[01][0-9][0-3][0-9]-[012][0-9][0-9]{2}))? # base date
