@@ -1042,7 +1042,7 @@ sync
 if update_timestamp; then
     # Create temporary timestamp file if a location is defined and
     # we are doing a full backup
-    if [ -d $(basename $INCREMENTAL_TIMESTAMP_FILE) ]; then
+    if ! [ -z "$INCREMENTAL_TIMESTAMP_FILE" ] && ! [ -d $(dirname $INCREMENTAL_TIMESTAMP_FILE) ]; then
         mkdir -p $(basename $INCREMENTAL_TIMESTAMP_FILE)
     fi
     echo $DATE > "${INCREMENTAL_TIMESTAMP_FILE}.running"
