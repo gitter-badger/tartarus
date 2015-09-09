@@ -1044,6 +1044,11 @@ if update_timestamp; then
     # we are doing a full backup
     if ! [ -z "$INCREMENTAL_TIMESTAMP_FILE" ] && ! [ -d $(dirname $INCREMENTAL_TIMESTAMP_FILE) ]; then
         mkdir -p $(dirname $INCREMENTAL_TIMESTAMP_FILE)
+            local EXITCODE=$?
+            if ! [ $EXITCODE -eq 0 ]; then
+                debug "Can't create $INCREMENTAL_TIMESTAMP_FILE ... Permissions?"
+                return $EXITCODE
+            fi
     fi
     echo $DATE > "${INCREMENTAL_TIMESTAMP_FILE}.running"
 fi
