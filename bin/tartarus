@@ -1001,7 +1001,9 @@ if ! [ -z "$DISK_READ_LIMIT" ]; then
     requireCommand pv || cleanup 1
     filter_in() {
         pv --quiet --skip-errors --rate-limit $DISK_READ_LIMIT
-        return 1
+        if ! [ $? -eq 0 ]; then
+            return 1
+        fi
     }
 fi
 
@@ -1025,7 +1027,9 @@ if ! [ -z "$PV_OPTS" ]; then
     requireCommand pv || cleanup 1
     filter_out() {
         pv --skip-errors $PV_OPTS
-        return 1
+        if ! [ $? -eq 0 ]; then
+            return 1
+        fi
     }
 fi
 
