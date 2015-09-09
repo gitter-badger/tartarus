@@ -561,6 +561,26 @@ ENCRYPT_KEYRING=""
 # Any additional options can be passed to GnuPG by editing this variable.
 ENCRYPT_GPG_OPTIONS=""
 #
+#=item ENCRYPT_GPG_USE_COMPRESSION
+#
+# If enabled, the encrypted data will be compressed by GnuPG.
+ENCRYPT_GPG_USE_COMPRESSION="no"
+#
+#=item ENCRYPT_GPG_COMPRESSION_LEVEL
+#
+# This option defines the compression level used by GnuPG while encrypting the data.
+ENCRYPT_GPG_COMPRESSION_LEVEL="6"
+#
+#=item OPENSSL_OPTIONS
+#
+# Any additional options can be passed to OpenSSL by editing this variable.
+OPENSSL_OPTIONS=""
+#
+#=item OPENSSL_PASSWORD
+#
+# This option defines the password to be used by OpenSSL to encrypt the data.
+OPENSSL_PASSWORD=""
+#
 #=item LIMIT_DISK_IO
 #
 # When enabled, the input/output load of the backup process will be limited
@@ -666,6 +686,18 @@ if isEnabled "$CREATE_LVM_SNAPSHOT"; then
 
     fi
 fi
+
+# Check if OpenSSL password has set
+if [ $COMPRESSION_METHOD -eq "enc" ] && -z [ $OPENSSL_PASSWORD ]; then
+    cleanup 1 "If OpenSSL is used, OPENSSL_PASSWORD are mandatory."
+
+else
+    OPENSSL_OPTIONS_QUOTED=""
+    for i in $(echo "OPENSSL_OPTIONS") ; do 
+        OPENSSL_OPTIONS_QUOTED="$OPENSSL_OPTIONS_QUOTED -Q $i" ; 
+    done
+fi
+
 
 constructFilename() {
     local INC=""
@@ -789,30 +821,36 @@ compression() {
     cat -
 }
 
+
+
 ARCHIVE_EXTENSION=""
 case "$ASSEMBLY_METHOD" in
     afio)
         # afio handles compression by itself
         case "$COMPRESSION_METHOD" in
             gzip)
-                AFIO_OPTIONS="$AFIO_OPTIONS -Z -P gzip"
+                AFIO_OPTIONS="$AFIO_OPTIONS -Z -U -P gzip"
                 ARCHIVE_EXTENSION=".gz"
             ;;
             bzip2)
-                AFIO_OPTIONS="$AFIO_OPTIONS -Z -P bzip2"
+                AFIO_OPTIONS="$AFIO_OPTIONS -Z -U -P bzip2"
                 ARCHIVE_EXTENSION=".bz2"
             ;;
             pbzip2)
-                AFIO_OPTIONS="$AFIO_OPTIONS -Z -P pbzip2"
+                AFIO_OPTIONS="$AFIO_OPTIONS -Z -U -P pbzip2"
                 ARCHIVE_EXTENSION=".bz2"
             ;;
             xz)
-                AFIO_OPTIONS="$AFIO_OPTIONS -Z -P xz"
+                AFIO_OPTIONS="$AFIO_OPTIONS -Z -U -P xz"
                 ARCHIVE_EXTENSION=".xz"
             ;;
             lzop)
-                AFIO_OPTIONS="$AFIO_OPTIONS -Z -P lzop"
+                AFIO_OPTIONS="$AFIO_OPTIONS -Z -U -P lzop"
                 ARCHIVE_EXTENSION=".lzo"
+            ;;
+            enc)
+                AFIO_OPTIONS="$AFIO_OPTIONS -Z -U -P openssl -Q enc -Q -aes-256-cbc -Q -salt -Q -k -Q $OPENSSL_PASSWORD $OPENSSL_OPTIONS_QUOTED"
+                ARCHIVE_EXTENSION=".enc"
             ;;
         esac
     ;;
@@ -853,6 +891,13 @@ case "$ASSEMBLY_METHOD" in
                 }
                 ARCHIVE_EXTENSION=".lzo"
             ;;
+            enc)
+                requireCommand openssl || cleanup 1
+                compression() {
+                    openssl enc -aes-256-cbc -salt -k "$OPENSSL_PASSWORD" "$OPENSSL_OPTIONS"
+                }
+                ARCHIVE_EXTENSION=".enc"
+            ;;
         esac
     ;;
 esac
@@ -869,6 +914,14 @@ if isEnabled "$ENCRYPT_SYMMETRICALLY" || isEnabled "$ENCRYPT_ASYMMETRICALLY"; th
 
     GPG_BASE_OPTIONS="--batch --no-use-agent --no-tty --trust-model always $ENCRYPT_GPG_OPTIONS"
     ARCHIVE_EXTENSION="$ARCHIVE_EXTENSION.gpg"
+
+    if isEnabled "$ENCRYPT_GPG_COMPRESSION"; then
+        if ! [ -z "$ENCRYPT_GPG_COMPRESSION_LEVEL" ];
+            GPG_BASE_OPTIONS="$GPG_BASE_OPTIONS --compress-level $ENCRYPT_GPG_COMPRESSION_LEVEL" 
+        fi
+    else
+       GPG_BASE_OPTIONS="$GPG_BASE_OPTIONS --compress-level 0" 
+    fi
 
     GPGOPTIONS=""
     
