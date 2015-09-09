@@ -857,7 +857,7 @@ case "$ASSEMBLY_METHOD" in
                 ARCHIVE_EXTENSION=".lzo"
             ;;
             openssl)
-                AFIO_OPTIONS="$AFIO_OPTIONS -Z -U -P openssl -Q enc -Q -$OPENSSL_CIPHER -Q -salt -Q -k -Q $OPENSSL_PASSWORD $OPENSSL_OPTIONS_QUOTED"
+                AFIO_OPTIONS="$AFIO_OPTIONS -Z -U -P openssl -Q enc -Q -$OPENSSL_CIPHER -Q -k -Q $OPENSSL_PASSWORD $OPENSSL_OPTIONS_QUOTED"
                 ARCHIVE_EXTENSION=".enc"
             ;;
         esac
