@@ -924,7 +924,7 @@ if isEnabled "$ENCRYPT_SYMMETRICALLY" || isEnabled "$ENCRYPT_ASYMMETRICALLY"; th
     GPG_BASE_OPTIONS="--batch --no-use-agent --no-tty --trust-model always $ENCRYPT_GPG_OPTIONS"
     ARCHIVE_EXTENSION="$ARCHIVE_EXTENSION.gpg"
 
-    if isEnabled "$ENCRYPT_GPG_COMPRESSION_LEVEL"; then
+    if isEnabled "$ENCRYPT_GPG_USE_COMPRESSION"; then
         if ! [ -z "$ENCRYPT_GPG_COMPRESSION_LEVEL" ]; then
             GPG_BASE_OPTIONS="$GPG_BASE_OPTIONS --compress-level $ENCRYPT_GPG_COMPRESSION_LEVEL" 
         fi
