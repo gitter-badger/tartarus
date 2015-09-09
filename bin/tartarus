@@ -1038,7 +1038,7 @@ fi
 hook POST_CONFIGVERIFY
 
 # Make sure we clean up if the user aborts
-trap "cleanup 1 'canceled by user interruption'" INT
+trap "cleanup 1 'canceled by user interruption'" INT TERM
 
 DATE="$(date +%Y%m%d-%H%M)"
 # Let's start with the real work
