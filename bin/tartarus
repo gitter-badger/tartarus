@@ -848,7 +848,7 @@ case "$ASSEMBLY_METHOD" in
                 AFIO_OPTIONS="$AFIO_OPTIONS -Z -U -P lzop"
                 ARCHIVE_EXTENSION=".lzo"
             ;;
-            enc)
+            openssl)
                 AFIO_OPTIONS="$AFIO_OPTIONS -Z -U -P openssl -Q enc -Q -aes-256-cbc -Q -salt -Q -k -Q $OPENSSL_PASSWORD $OPENSSL_OPTIONS_QUOTED"
                 ARCHIVE_EXTENSION=".enc"
             ;;
@@ -891,7 +891,7 @@ case "$ASSEMBLY_METHOD" in
                 }
                 ARCHIVE_EXTENSION=".lzo"
             ;;
-            enc)
+            openssl)
                 requireCommand openssl || cleanup 1
                 compression() {
                     openssl enc -aes-256-cbc -salt -k "$OPENSSL_PASSWORD" "$OPENSSL_OPTIONS"
