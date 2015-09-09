@@ -688,7 +688,7 @@ if isEnabled "$CREATE_LVM_SNAPSHOT"; then
 fi
 
 # Check if OpenSSL password has set
-if [ $COMPRESSION_METHOD -eq "openssl" ] && -z [ $OPENSSL_PASSWORD ]; then
+if [ "$COMPRESSION_METHOD" -eq "openssl" ] && -z [ "$OPENSSL_PASSWORD" ]; then
     cleanup 1 "If OpenSSL is used, OPENSSL_PASSWORD are mandatory."
 
 else
