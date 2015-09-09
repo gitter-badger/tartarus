@@ -159,7 +159,7 @@ cleanup() {
     fi
 
     if [ -f "${INCREMENTAL_TIMESTAMP_FILE}.running" ]; then
-        rm "${INCREMENTAL_TIMESTAMP_FILE}.running"
+        rm -f "${INCREMENTAL_TIMESTAMP_FILE}.running"
     fi
 
     if [ "$ABORT" -eq "1" ]; then
@@ -210,6 +210,7 @@ call() {
 # We can now check for newer versions of tartarus
 # TODO: fix url to new repo
 update_check() {
+    return 0
     requireCommand curl awk || return
     local VERSION_URL="http://localhost/tartarus/upgrade-$VERSION"
     VERSION_URL="${VERSION_URL}-deb"
@@ -235,7 +236,7 @@ BEGIN {
 '
     if [ "$?" -eq 1 ]; then
         debug "!!! This script is outdated !!!"
-        debug "An upgrade to version $NEW_VERSION is available. Please visit http://wertarbyte.de/tartarus.shtml or use your package system to install the new version."
+        debug "An upgrade to version $NEW_VERSION is available. Please visit https://github.com/amaxcz/tartarus or use your package system to install the new version."
         return 1
     fi
     return 0
