@@ -584,6 +584,7 @@ OPENSSL_PASSWORD=""
 #=item OPENSSL_CIPHER
 #
 # This option defines the cipher to be used by OpenSSL to encrypt the data.
+# Use openssl enc --help to get list of available ciphers
 OPENSSL_CIPHER=""
 #
 #=item LIMIT_DISK_IO
@@ -702,7 +703,7 @@ else
     done
 
     if [ -z "$OPENSSL_CIPHER" ]; then
-        OPENSSL_CIPHER="aes-256-cbc"
+        OPENSSL_CIPHER="-aes-256-cbc"
     fi
 fi
 
@@ -857,7 +858,7 @@ case "$ASSEMBLY_METHOD" in
                 ARCHIVE_EXTENSION=".lzo"
             ;;
             openssl)
-                AFIO_OPTIONS="$AFIO_OPTIONS -Z -U -P openssl -Q enc -Q -$OPENSSL_CIPHER -Q -k -Q $OPENSSL_PASSWORD $OPENSSL_OPTIONS_QUOTED"
+                AFIO_OPTIONS="$AFIO_OPTIONS -Z -U -P openssl -Q enc -Q $OPENSSL_CIPHER -Q -k -Q $OPENSSL_PASSWORD $OPENSSL_OPTIONS_QUOTED"
                 ARCHIVE_EXTENSION=".enc"
             ;;
         esac
@@ -902,7 +903,7 @@ case "$ASSEMBLY_METHOD" in
             openssl)
                 requireCommand openssl || cleanup 1
                 compression() {
-                    openssl enc -"$OPENSSL_CIPHER" -k "$OPENSSL_PASSWORD" "$OPENSSL_OPTIONS"
+                    openssl enc "$OPENSSL_CIPHER" -k "$OPENSSL_PASSWORD" "$OPENSSL_OPTIONS"
                 }
                 ARCHIVE_EXTENSION=".enc"
             ;;
