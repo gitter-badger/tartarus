@@ -1,3 +1,8 @@
+#
+# Tartarus Makefile // Evolution
+# GitHub fork: https://github.com/amaxcz/tartarus
+#
+
 # extreact release version from tartarus script
 RELEASE:=$(shell grep '^readonly VERSION="' bin/tartarus | cut -d\" -f 2)
 

@@ -1,4 +1,4 @@
-Tartarus / Evolution - a flexible script based backup system
+Tartarus // Evolution - a flexible script based backup system
 
 
 This document describes the manual installation procedure of the tartarus
@@ -30,4 +30,5 @@ files can be copied to the directory /usr/local/share/man/man1/ for easy
 access.
 
 
+GitHub fork: https://github.com/amaxcz/tartarus
 Copyright 2008 Stefan Tomanek <stefan.tomanek+tartarus@wertarbyte.de>
