@@ -15,7 +15,7 @@
 #
 #
 
-readonly VERSION="1.0"
+readonly VERSION="1.0-rc1"
 
 #=pod
 #
@@ -600,7 +600,7 @@ DISK_WRITE_LIMIT=""
 #=item SHOW_IO_PROGRESS
 #
 # When enabled, the progressbar will show someting about result I/O.
-SHOW_IO_PROGRESS="yes"
+SHOW_IO_PROGRESS="no"
 #
 #=item LIMIT_DISK_IO
 #
