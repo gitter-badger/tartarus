@@ -590,12 +590,12 @@ OPENSSL_CIPHER=""
 #=item DISK_READ_LIMIT
 #
 # If enabled, the disk read limit will be used (100K, 40M, etc)
-DISK_READ_LIMIT="no"
+DISK_READ_LIMIT=""
 #
 #=item DISK_WRITE_LIMIT
 #
 # If enabled, the disk write limit will be used (100K, 40M, etc)
-DISK_WRITE_LIMIT="no"
+DISK_WRITE_LIMIT=""
 #
 #=item SHOW_IO_PROGRESS
 #
