@@ -587,6 +587,21 @@ OPENSSL_PASSWORD=""
 # Use openssl enc --help to get list of available ciphers
 OPENSSL_CIPHER=""
 #
+#=item DISK_READ_LIMIT
+#
+# If enabled, the disk read limit will be used (100K, 40M, etc)
+DISK_READ_LIMIT="no"
+#
+#=item DISK_WRITE_LIMIT
+#
+# If enabled, the disk write limit will be used (100K, 40M, etc)
+DISK_WRITE_LIMIT="no"
+#
+#=item SHOW_IO_PROGRESS
+#
+# When enabled, the progressbar will show someting about result I/O.
+SHOW_IO_PROGRESS="yes"
+#
 #=item LIMIT_DISK_IO
 #
 # When enabled, the input/output load of the backup process will be limited
@@ -735,7 +750,7 @@ case "$ASSEMBLY_METHOD" in
         # use the traditional tar setup
         requireCommand tar || cleanup 1
         collate() {
-            local TAROPTS="--no-unquote --no-recursion --ignore-failed-read --sparse --totals $TAR_OPTIONS"
+            local TAROPTS="--no-unquote --no-recursion --ignore-failed-read --sparse $TAR_OPTIONS"
             call tar cpf -  $TAROPTS --null -T -
             local EXITCODE=$?
             # exit code 1 means that some files have changed while backing them
@@ -971,6 +986,41 @@ if isEnabled "$ENCRYPT_SYMMETRICALLY" || isEnabled "$ENCRYPT_ASYMMETRICALLY"; th
     }
 fi
 
+
+
+# Just a method that does nothing
+filter_in() {
+    cat -
+}
+
+if ! [ -z "$DISK_READ_LIMIT" ]; then
+    requireCommand pv || cleanup 1
+    filter_in() {
+        pv --quiet --skip-errors --rate-limit "$DISK_READ_LIMIT"
+    }
+fi
+
+
+# Just a method that does nothing
+filter_out() {
+    cat -
+}
+
+PV_OPTS=""
+if ! [ -z "$DISK_WRITE_LIMIT" ]; then
+        PV_OPTS="$PV_OPTS --rate-limit $DISK_WRITE_LIMIT"
+fi
+if isEnabled "$SHOW_IO_PROGRESS"; then
+        PV_OPTS="$PV_OPTS --timer --rate --bytes"
+fi
+
+if ! [ -z "$PV_OPTS" ]; then
+    requireCommand pv || cleanup 1
+    filter_out() {
+        pv --quiet --skip-errors "$PV_OPTS"
+    }
+fi
+
 ###
 # Now we should have verified all arguments
 hook POST_CONFIGVERIFY
@@ -1069,8 +1119,10 @@ hook PRE_STORE
 
 call find "$BDIR" $FINDOPTS $EXCLUDES $FINDARGS | \
     call collate | \
+    call filter_in | \
     call compression | \
     call encryption | \
+    call filter_out | \
     call chunknstore
 
 BACKUP_FAILURE=$?
