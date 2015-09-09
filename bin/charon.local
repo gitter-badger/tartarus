@@ -1,7 +1,8 @@
 #!/usr/bin/perl
 #
-# charon.local by Stefan Tomanek <stefan.tomanek@wertarbyte.de>
-#              http://wertarbyte.de/tartarus.shtml
+# Tartarus charon.local // Evolution
+# GitHub fork: https://github.com/amaxcz/tartarus
+#
 #
 # This script will remove tartarus backup files from a local directory
 #
@@ -92,7 +93,7 @@ created by Tartarus with the profile name "home" which exceed the age of 7 days:
 sub usage {
     my ($error) = @_;
     print <<EOF;
-charon.local by Stefan Tomanek <stefan.tomanek\@wertarbyte.de>
+Tartarus charon.local // Evolution
 
     --dir           server directory of the backup files
     --maxage        maximum age of backup files (in days)
@@ -101,6 +102,9 @@ charon.local by Stefan Tomanek <stefan.tomanek\@wertarbyte.de>
     --dry-run       do a test run, don't actually delete files
     --verbose       be more verbose about the actions made
     --help          show this help text
+
+GitHub fork: https://github.com/amaxcz/tartarus
+Copyright 2008 Stefan Tomanek <stefan.tomanek+tartarus\@wertarbyte.de>
 EOF
     if (defined $error) {
         print "\n$error\n";
@@ -142,6 +146,7 @@ for my $file ($c->expire($days_to_expire, $uprofile)) {
 
 =head1 AUTHOR
 
+GitHub fork: https://github.com/amaxcz/tartarus
 Stefan Tomanek E<lt>stefan.tomanek@wertarbyte.deE<gt>
 
 =cut

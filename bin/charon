@@ -1,5 +1,6 @@
 #!/bin/sh
-echo "Charon wrapper script, defaulting to charon.ftp" >&2
+echo "Tartarus charon // Evolution" >&2
+echo "It's a wrapper script, defaulting to charon.ftp" >&2
 echo "Please fix your script to call charon.ftp directly" >&2
 
 exec charon.ftp "$@"

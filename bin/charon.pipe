@@ -1,7 +1,8 @@
 #!/usr/bin/perl
 #
-# charon.pipe by Stefan Tomanek <stefan.tomanek@wertarbyte.de>
-#              http://wertarbyte.de/tartarus.shtml
+# Tartarus charon.pipe // Evolution
+# GitHub fork: https://github.com/amaxcz/tartarus
+#
 #
 # This script filters filters tartarus backup filenames passed
 # through stdin and print expired ones on stdout.
@@ -80,13 +81,14 @@ This parameter shows a brief command reference.
 
 =head1 EXAMPLE
 
-Charon.pipe can be used to emplay custom cleanup scripts, for example by gathering
-filenames through an SSH connection. It can also be used for testing purposes:
+The command charon.pipe can be used to emplay custom cleanup scripts, for example by gathering
+filenames through an SSH connection. It can also be used for testing purposes (example for Linux):
 
-    $ find -maxdepth 1 -type f -printf '%f\0' | charon.local -0 --maxage 7 --all | xargs -0 -- ls -l
+    $ find -maxdepth 1 -type f -printf '%f\0' | charon.pipe -0 --maxage 7 --all | xargs -0 -- ls -l
 
 =head1 AUTHOR
 
+GitHub fork: https://github.com/amaxcz/tartarus
 Stefan Tomanek E<lt>stefan.tomanek@wertarbyte.deE<gt>
 
 =cut
@@ -94,14 +96,17 @@ Stefan Tomanek E<lt>stefan.tomanek@wertarbyte.deE<gt>
 sub usage {
     my ($error) = @_;
     print <<EOF;
-charon.pipe by Stefan Tomanek <stefan.tomanek\@wertarbyte.de>
-    
+Tartarus charon.pipe // Evolution
+
     --null|-0       filenames are terminated by the null character
     --maxage        maximum age of backup files (in days)
     --profile       backup profile name to process
     --all           process all files found in the directory
     --verbose       be more verbose about the actions made
     --help          show this help text
+
+GitHub fork: https://github.com/amaxcz/tartarus
+Copyright 2008 Stefan Tomanek <stefan.tomanek+tartarus\@wertarbyte.de>
 EOF
     if (defined $error) {
         print "\n$error\n";

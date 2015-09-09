@@ -1,7 +1,14 @@
 #!/usr/bin/perl
 #
-# charon by Stefan Tomanek <stefan.tomanek@wertarbyte.de>
-#              http://wertarbyte.de/tartarus.shtml
+# Tartarus charon.ftp // Evolution
+# GitHub fork: https://github.com/amaxcz/tartarus
+#
+#
+# Copyright 2008 Stefan Tomanek <stefan.tomanek+tartarus@wertarbyte.de>
+# You have permission to copy, modify, and redistribute under the
+# terms of the GPLv3 or any later version.
+# For full license terms, see COPYING.
+
 #
 # This script will remove tartarus backup files from an FTP server
 # that have reached a certain age.
@@ -122,7 +129,7 @@ This parameter shows a brief command reference.
 sub usage {
     my ($error) = @_;
     print <<EOF;
-charon.ftp by Stefan Tomanek <stefan.tomanek\@wertarbyte.de>
+Tartarus charon.ftp // Evolution
 
     --host          FTP server to connect to
     --ssl           use SSL for contacting the server
@@ -137,6 +144,10 @@ charon.ftp by Stefan Tomanek <stefan.tomanek\@wertarbyte.de>
     --truncate      truncate files on server before deleting
     --verbose       be more verbose about the actions made
     --help          show this help text
+
+GitHub fork: https://github.com/amaxcz/tartarus
+Copyright 2008 Stefan Tomanek <stefan.tomanek+tartarus\@wertarbyte.de>
+
 EOF
     if (defined $error) {
         print "\n$error\n";
@@ -170,7 +181,7 @@ if ($use_ssl) {
     $ftpclass = 'Net::FTP';
 }
 
-if ($host =~ m/^([^:]+):(\d+)$/) {
+if ($host && $host =~ m/^([^:]+):(\d+)$/) {
     ($host, $port) = ($1, $2);
 }
 

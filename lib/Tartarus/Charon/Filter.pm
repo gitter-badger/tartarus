@@ -1,6 +1,9 @@
 use strict;
 package Tartarus::Charon::Filter;
 
+# Tartarus Filter.pm // Evolution
+# GitHub fork: https://github.com/amaxcz/tartarus
+#
 # Copyright 2008 Stefan Tomanek <stefan.tomanek+tartarus@wertarbyte.de>
 # You have permission to copy, modify, and redistribute under the
 # terms of the GPLv3 or any later version.

@@ -1,6 +1,6 @@
 #!/bin/bash
 #
-# Tartarus // Evolution
+# Tartarus tartarus // Evolution
 # GitHub fork: https://github.com/amaxcz/tartarus
 #
 #
@@ -15,7 +15,7 @@
 #
 #
 
-readonly VERSION="0.9.9"
+readonly VERSION="1.0"
 
 #=pod
 #
@@ -203,9 +203,10 @@ call() {
 }
 
 # We can now check for newer versions of tartarus
+# TODO: fix url to new repo
 update_check() {
     requireCommand curl awk || return
-    local VERSION_URL="http://wertarbyte.de/tartarus/upgrade-$VERSION"
+    local VERSION_URL="http://localhost/tartarus/upgrade-$VERSION"
     VERSION_URL="${VERSION_URL}-deb"
 
     local NEW_VERSION="$(curl --connect-timeout 15 -fs "$VERSION_URL")"
@@ -745,7 +746,7 @@ case "$STORAGE_METHOD" in
             local FILE=$(constructFilename)
             local URL="$PROTO://$STORAGE_FTP_SERVER/$STORAGE_FTP_DIR/$FILE"
             debug "Uploading backup to $URL..."
-            curl $OPTS $CURL_OPTIONS --upload-file - "$URL"
+            curl $OPTS $CURL_OPTIONS --upload-file --insecure - "$URL"
         }
     ;;
     FILE)
@@ -811,7 +812,7 @@ case "$ASSEMBLY_METHOD" in
             ;;
             lzop)
                 AFIO_OPTIONS="$AFIO_OPTIONS -Z -P lzop"
-                ARCHIVE_EXTENSION=".xz"
+                ARCHIVE_EXTENSION=".lzo"
             ;;
         esac
     ;;
@@ -1362,7 +1363,7 @@ cleanup 0
 # 
 #=head1 AUTHOR
 #
+# GitHub fork: https://github.com/amaxcz/tartarus
 # Stefan Tomanek E<lt>stefan.tomanek+tartarus@wertarbyte.deE<gt>
-# http://wertarbyte.de/tartarus.shtml
 #
 #=cut
