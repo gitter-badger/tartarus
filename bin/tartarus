@@ -574,6 +574,7 @@ ENCRYPT_GPG_COMPRESSION_LEVEL="6"
 #=item OPENSSL_OPTIONS
 #
 # Any additional options can be passed to OpenSSL by editing this variable.
+# For example: -nosalt
 OPENSSL_OPTIONS=""
 #
 #=item OPENSSL_PASSWORD
@@ -585,16 +586,17 @@ OPENSSL_PASSWORD=""
 #
 # This option defines the cipher to be used by OpenSSL to encrypt the data.
 # Use openssl enc --help to get list of available ciphers
+# for example: -rc4 or -aes-128-cbc
 OPENSSL_CIPHER=""
 #
 #=item DISK_READ_LIMIT
 #
-# If enabled, the disk read limit will be used (100K, 40M, etc)
+# If enabled, the disk read limit will be used (2000, 200K, 20M)
 DISK_READ_LIMIT=""
 #
 #=item DISK_WRITE_LIMIT
 #
-# If enabled, the disk write limit will be used (100K, 40M, etc)
+# If enabled, the disk write limit will be used (10000, 100K, 10M)
 DISK_WRITE_LIMIT=""
 #
 #=item SHOW_IO_PROGRESS
