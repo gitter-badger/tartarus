@@ -688,7 +688,7 @@ if isEnabled "$CREATE_LVM_SNAPSHOT"; then
 fi
 
 # Check if OpenSSL password has set
-if [ "$COMPRESSION_METHOD" -eq "openssl" ] && -z [ "$OPENSSL_PASSWORD" ]; then
+if [ "$COMPRESSION_METHOD" == "openssl" ] && -z [ "$OPENSSL_PASSWORD" ]; then
     cleanup 1 "If OpenSSL is used, OPENSSL_PASSWORD are mandatory."
 
 else
@@ -778,7 +778,7 @@ case "$STORAGE_METHOD" in
             local FILE=$(constructFilename)
             local URL="$PROTO://$STORAGE_FTP_SERVER/$STORAGE_FTP_DIR/$FILE"
             debug "Uploading backup to $URL..."
-            curl $OPTS $CURL_OPTIONS --upload-file --insecure - "$URL"
+            curl $OPTS $CURL_OPTIONS --upload-file - "$URL"
         }
     ;;
     FILE)
