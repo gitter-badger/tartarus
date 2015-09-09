@@ -411,7 +411,7 @@ CURL_OPTIONS=""
 #
 # Tartarus can utilize various compression methods to the shrink the processed data
 # before storing it. Leaving the variable blank (which is the default) will disable
-# compression, other known values are "gzip", "bzip2", "pbzip2", "xz", "lzop".
+# compression, other known values are "gzip", "bzip2", "pbzip2", "xz", "lzop", "openssl".
 COMPRESSION_METHOD=""
 #
 #=item STORAGE_METHOD
@@ -511,6 +511,7 @@ INCREMENTAL_STACKING="no"
 # Directories that should be excluded from the backup can be placed in this variable.
 # While Tartarus will not traverse into these directories, they will be included in the
 # backup, although without their content.
+# Example: "/tmp /var/tmp /lar/log"
 EXCLUDE=""
 #
 #=item EXCLUDE_FILES
@@ -523,6 +524,7 @@ EXCLUDE_FILES=""
 #=item EXCLUDE_FILENAME_PATTERNS
 #
 # This variable holds a list of filename patterns to be excluded from the backup.
+# Example: "*.tmp *.git *.svn"
 EXCLUDE_FILENAME_PATTERNS=""
 #
 #=item ENCRYPT_SYMMETRICALLY
@@ -999,7 +1001,7 @@ if ! [ -z "$DISK_READ_LIMIT" ]; then
     requireCommand pv || cleanup 1
     filter_in() {
         pv --quiet --skip-errors --rate-limit $DISK_READ_LIMIT
-        return 0
+        return 1
     }
 fi
 
@@ -1023,7 +1025,7 @@ if ! [ -z "$PV_OPTS" ]; then
     requireCommand pv || cleanup 1
     filter_out() {
         pv --skip-errors $PV_OPTS
-        return 0
+        return 1
     }
 fi
 
