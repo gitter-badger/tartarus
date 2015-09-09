@@ -581,6 +581,11 @@ OPENSSL_OPTIONS=""
 # This option defines the password to be used by OpenSSL to encrypt the data.
 OPENSSL_PASSWORD=""
 #
+#=item OPENSSL_CIPHER
+#
+# This option defines the cipher to be used by OpenSSL to encrypt the data.
+OPENSSL_CIPHER=""
+#
 #=item LIMIT_DISK_IO
 #
 # When enabled, the input/output load of the backup process will be limited
@@ -696,6 +701,10 @@ else
     for i in $(echo "$OPENSSL_OPTIONS") ; do 
         OPENSSL_OPTIONS_QUOTED="$OPENSSL_OPTIONS_QUOTED -Q $i" ; 
     done
+
+    if [ -z "$OPENSSL_CIPHER" ]; then
+        OPENSSL_CIPHER="aes-256-cbc"
+    fi
 fi
 
 
@@ -849,7 +858,7 @@ case "$ASSEMBLY_METHOD" in
                 ARCHIVE_EXTENSION=".lzo"
             ;;
             openssl)
-                AFIO_OPTIONS="$AFIO_OPTIONS -Z -U -P openssl -Q enc -Q -aes-256-cbc -Q -salt -Q -k -Q $OPENSSL_PASSWORD $OPENSSL_OPTIONS_QUOTED"
+                AFIO_OPTIONS="$AFIO_OPTIONS -Z -U -P openssl -Q enc -Q -$OPENSSL_CIPHER -Q -salt -Q -k -Q $OPENSSL_PASSWORD $OPENSSL_OPTIONS_QUOTED"
                 ARCHIVE_EXTENSION=".enc"
             ;;
         esac
@@ -894,7 +903,7 @@ case "$ASSEMBLY_METHOD" in
             openssl)
                 requireCommand openssl || cleanup 1
                 compression() {
-                    openssl enc -aes-256-cbc -salt -k "$OPENSSL_PASSWORD" "$OPENSSL_OPTIONS"
+                    openssl enc -"$OPENSSL_CIPHER" -k "$OPENSSL_PASSWORD" "$OPENSSL_OPTIONS"
                 }
                 ARCHIVE_EXTENSION=".enc"
             ;;
