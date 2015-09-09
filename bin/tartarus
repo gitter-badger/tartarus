@@ -1012,12 +1012,14 @@ if ! [ -z "$DISK_WRITE_LIMIT" ]; then
 fi
 if isEnabled "$SHOW_IO_PROGRESS"; then
         PV_OPTS="$PV_OPTS --timer --rate --bytes"
+else
+        PV_OPTS="$PV_OPTS --quiet"
 fi
 
 if ! [ -z "$PV_OPTS" ]; then
     requireCommand pv || cleanup 1
     filter_out() {
-        pv --quiet --skip-errors $PV_OPTS
+        pv --skip-errors $PV_OPTS
     }
 fi
 
