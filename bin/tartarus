@@ -599,7 +599,7 @@ OPENSSL_PASSWORD=""
 OPENSSL_CIPHER=""
 #=item OPENSSL_USE_COMPRESSION
 #
-# If enabled, the data will be compressed by lzop before compression.
+# If enabled, the data will be compressed by lzop before encryption.
 OPENSSL_USE_COMPRESSION="no"
 #
 #=item DISK_READ_LIMIT
