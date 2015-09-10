@@ -934,12 +934,16 @@ case "$ASSEMBLY_METHOD" in
                 requireCommand openssl || cleanup 1
                 OPENSSL_COMPRESSOR=""
                 if isEnabled "$OPENSSL_USE_COMPRESSION"; then
-                    OPENSSL_COMPRESSOR="lzop | "
-                fi
-                compression() {
-                   "$OPENSSL_COMPRESSOR" openssl enc "$OPENSSL_CIPHER" -k "$OPENSSL_PASSWORD" "$OPENSSL_OPTIONS"
-                }
-                ARCHIVE_EXTENSION=".enc"
+                    compression() {
+                       lzop | openssl enc "$OPENSSL_CIPHER" -k "$OPENSSL_PASSWORD" "$OPENSSL_OPTIONS"
+                    }
+                    ARCHIVE_EXTENSION=".lzo.enc"
+                else
+                    compression() {
+                       openssl enc "$OPENSSL_CIPHER" -k "$OPENSSL_PASSWORD" "$OPENSSL_OPTIONS"
+                    }
+                    ARCHIVE_EXTENSION=".enc"
+                fi 
             ;;
         esac
     ;;
