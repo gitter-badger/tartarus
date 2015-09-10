@@ -1107,7 +1107,7 @@ EXCLUDES=""
 set +f
 
 for i in $EXCLUDE; do
-    i=$(echo $i | sed 's#^/#./#; s#/$##')
+    i=$(echo $i | tr -s / | sed 's#^/#./#; s#/$##;')
     # Don't descend in the excluded directory, but print the directory itself
     EXCLUDES="$EXCLUDES -path $i -prune -print0 -o"
 done
