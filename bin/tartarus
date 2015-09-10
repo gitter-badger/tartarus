@@ -50,6 +50,7 @@ CMD_UPDATE="no"
 CMD_CURL_SILENT_FLAGS="-s -S"
 PROFILE=""
 
+
 # check command line
 GETOPT_TEMP=$(getopt -o uip --long update,inc,progress -n tartarus -- "$@")
 if [ $? != 0 ] ; then echo "Terminating..." >&2 ; exit 1 ; fi
@@ -596,6 +597,10 @@ OPENSSL_PASSWORD=""
 # Use openssl enc --help to get list of available ciphers
 # for example: -rc4 or -aes-128-cbc
 OPENSSL_CIPHER=""
+#=item OPENSSL_USE_COMPRESSION
+#
+# If enabled, the data will be compressed by lzop before compression.
+OPENSSL_USE_COMPRESSION="no"
 #
 #=item DISK_READ_LIMIT
 #
@@ -927,8 +932,12 @@ case "$ASSEMBLY_METHOD" in
             ;;
             openssl)
                 requireCommand openssl || cleanup 1
+                OPENSSL_COMPRESSOR=""
+                if isEnabled "$OPENSSL_USE_COMPRESSION"; then
+                    OPENSSL_COMPRESSOR="lzop | "
+                fi
                 compression() {
-                    openssl enc "$OPENSSL_CIPHER" -k "$OPENSSL_PASSWORD" "$OPENSSL_OPTIONS"
+                   "$OPENSSL_COMPRESSOR" openssl enc "$OPENSSL_CIPHER" -k "$OPENSSL_PASSWORD" "$OPENSSL_OPTIONS"
                 }
                 ARCHIVE_EXTENSION=".enc"
             ;;
