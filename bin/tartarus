@@ -265,7 +265,7 @@ readChunk() {
 
 chunknstore() {
     if [ -n "$STORAGE_CHUNK_SIZE" ]; then
-        local CURRENT_CHUNK=$(printf "%04d\n" 1)
+        local CURRENT_CHUNK=$(echo "1" | awk '{printf "%04d", $1}')
         local MORE=1
         while [ "$MORE" -eq 1 ]; do
             debug "Processing chunk $CURRENT_CHUNK"
@@ -277,7 +277,7 @@ chunknstore() {
             if [ "${STATUS[1]}" -ne 0 ]; then
                 return "${STATUS[1]}"
             fi
-            CURRENT_CHUNK=$(printf "%04d\n" $(($CURRENT_CHUNK + 1)))
+            CURRENT_CHUNK=$(echo "$CURRENT_CHUNK" | awk '{printf "%04d", $1+1}')
         done
     else
         storage
