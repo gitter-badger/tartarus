@@ -1187,7 +1187,7 @@ debug "Beginning backup run..."
 cd "$BASEDIR"
 
 if isEnabled "$RELATIVE_PATH_FROM_DIRECTORY"; then
-    cd "$BASEDIR/$CDIR"
+    cd "$BASEDIR/$BDIR"
 fi
 
 WRITE_LIST_FILE=""
