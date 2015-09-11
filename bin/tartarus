@@ -514,7 +514,8 @@ INCREMENTAL_STACKING="no"
 #
 # Directories that should be included into the backup can be placed in this variable.
 # While Tartarus will traverse into these directories, they will be included in the
-# backup, except all remained. With this option enabled, exclude mask "*" will be used first.
+# backup, except all remained. 
+# Please read http://www.gnu.org/software/findutils/manual/html_mono/find.html#Shell-Pattern-Matching
 # Example: "dir1/* *dir2* dir1/*/dir3/*"
 INCLUDE=""
 #=item EXCLUDE
@@ -522,6 +523,7 @@ INCLUDE=""
 # Directories that should be excluded from the backup can be placed in this variable.
 # While Tartarus will not traverse into these directories, they will be included in the
 # backup, although without their content.
+# Please read http://www.gnu.org/software/findutils/manual/html_mono/find.html#Shell-Pattern-Matching
 # Example: "tmp var/tmp lar/log"
 EXCLUDE=""
 #
