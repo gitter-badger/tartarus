@@ -159,9 +159,6 @@ cleanup() {
       fi
     fi
 
-    if [ -f "${INCREMENTAL_TIMESTAMP_FILE}.running" ]; then
-        rm -f "${INCREMENTAL_TIMESTAMP_FILE}.running"
-    fi
 
     if [ "$ABORT" -eq "1" ]; then
         debug "done"
