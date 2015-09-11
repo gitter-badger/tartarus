@@ -1150,7 +1150,7 @@ set -f
 if ! [ -z "$EXCLUDE_FILENAME_PATTERNS" ]; then
     EXCLUDES="-not \\( -false"
     for p in $EXCLUDE_FILENAME_PATTERNS; do
-        EXCLUDES="$EXCLUDES \\( -iname '$p' -type f \\)"
+        EXCLUDES="$EXCLUDES -or \\( -iname '$p' -type f \\)"
     done
     EXCLUDES="$EXCLUDES \\) -and"
 fi
