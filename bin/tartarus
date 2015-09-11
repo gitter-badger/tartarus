@@ -1113,10 +1113,10 @@ INCLUDES=""
 # include locations
 set +f
 if ! [ -z "$INCLUDE" ]; then
-    INCLUDES="! -path '*'"
+    INCLUDES="! -path *"
     for i in $INCLUDE; do
         i=$(echo "$DIRECTORY/$i" | tr -s / | sed 's#^/#./#; s#/$##;')
-        INCLUDES="$INCLUDES -o -path '$i' -print0"    
+        INCLUDES="$INCLUDES -o -path $i -print0"    
     done
     INCLUDES="$INCLUDES -a"
 fi
@@ -1131,27 +1131,27 @@ if ! [ -z "$EXCLUDE" ]; then
     for i in $EXCLUDE; do
         i=$(echo "$DIRECTORY/$i" | tr -s / | sed 's#^/#./#; s#/$##;')
         # Don't descend in the excluded directory, but print the directory itself
-        EXCLUDES="$EXCLUDES -path '$i' -prune -print0 -o"
+        EXCLUDES="$EXCLUDES -path $i -prune -print0 -o"
     done
-    EXCLUDES="$EXCLUDES ! -path ''"
+    EXCLUDES="$EXCLUDES -true"
 fi
 
 if ! [ -z "$EXCLUDE_FILES" ]; then
     for i in $EXCLUDE_FILES; do
         i=$(echo "$DIRECTORY/$i" | tr -s / | sed 's#^/#./#; s#/$##')
         # Ignore files in the directory, but include subdirectories
-        EXCLUDES="$EXCLUDES -path '$i/*' ! -type d -prune -o"
+        EXCLUDES="$EXCLUDES -path $i/* ! -type d -prune -o"
     done
-    EXCLUDES="$EXCLUDES ! -path ''"
+    EXCLUDES="$EXCLUDES -true"
 fi
 
 # Prevent globbing since we are dealing with find patterns here
 set -f
 if ! [ -z "$EXCLUDE_FILENAME_PATTERNS" ]; then
     for p in $EXCLUDE_FILENAME_PATTERNS; do
-        EXCLUDES="$EXCLUDES -iname '$p' -type f -o"
+        EXCLUDES="$EXCLUDES -iname $p -type f -o"
     done
-    EXCLUDES="$EXCLUDES ! -path ''"
+    EXCLUDES="$EXCLUDES -true"
 fi
 
 
