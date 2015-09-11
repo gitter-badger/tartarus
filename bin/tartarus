@@ -331,6 +331,12 @@ NAME=""
 # The directory to be backed up; only a single directory name is allowed here.
 DIRECTORY=""
 #
+#=item RELATIVE_PATH_FROM_DIRECTORY
+#
+# If enabled, backup will use DIRECTORY as a top dir for backups, all paths will be relative.
+# If disabled, all paths will be absolute from root directory /.
+RELATIVE_PATH_FROM_DIRECTORY="yes"
+#
 #=item STAY_IN_FILESYSTEM
 #
 # Enabling this directory will prevent the backup process from traversing into
@@ -518,6 +524,7 @@ INCREMENTAL_STACKING="no"
 # Please read http://www.gnu.org/software/findutils/manual/html_mono/find.html#Shell-Pattern-Matching
 # Example: "dir1/* *dir2* dir1/*/dir3/*"
 INCLUDE=""
+#
 #=item EXCLUDE
 #
 # Directories that should be excluded from the backup can be placed in this variable.
@@ -603,6 +610,7 @@ OPENSSL_PASSWORD=""
 # Use openssl enc --help to get list of available ciphers
 # for example: -rc4 or -aes-128-cbc
 OPENSSL_CIPHER=""
+#
 #=item OPENSSL_USE_COMPRESSION
 #
 # If enabled, the data will be compressed by lzop before encryption.
@@ -1161,11 +1169,15 @@ fi
 debug "Beginning backup run..."
 
 OLDDIR=$(pwd)
-# We don't want absolut paths
+# We don't want absolute paths from root /
 BDIR=$(echo "$DIRECTORY" | tr -s / | sed 's#^/#./#')
 # $BASEDIR is either / or $SNAPSHOT_DIR
 cd "$BASEDIR"
 
+
+if isEnabled "$RELATIVE_PATH_FROM_DIRECTORY"; then
+    cd "$BASEDIR/$DIRECTORY"
+fi
 
 WRITE_LIST_FILE=""
 
