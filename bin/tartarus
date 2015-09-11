@@ -1151,6 +1151,7 @@ if ! [ -z "$EXCLUDE_FILENAME_PATTERNS" ]; then
     for p in $EXCLUDE_FILENAME_PATTERNS; do
         EXCLUDES="$EXCLUDES -iname '$p' -type f -o"
     done
+    EXCLUDES="$EXCLUDES ! -path ''"
 fi
 
 
