@@ -1130,7 +1130,7 @@ if ! [ -z "$EXCLUDE" ]; then
         # Don't descend in the excluded directory, but print the directory itself
         EXCLUDES="$EXCLUDES -path $i -prune -print0 -o"
     done
-    EXCLUDES="$EXCLUDES -false"
+#    EXCLUDES="$EXCLUDES"
 fi
 
 if ! [ -z "$EXCLUDE_FILES" ]; then
@@ -1139,7 +1139,7 @@ if ! [ -z "$EXCLUDE_FILES" ]; then
         # Ignore files in the directory, but include subdirectories
         EXCLUDES="$EXCLUDES -path $i/* ! -type d -prune -o"
     done
-    EXCLUDES="$EXCLUDES -false"
+ #   EXCLUDES="$EXCLUDES"
 fi
 
 # Prevent globbing since we are dealing with find patterns here
@@ -1148,7 +1148,7 @@ if ! [ -z "$EXCLUDE_FILENAME_PATTERNS" ]; then
     for p in $EXCLUDE_FILENAME_PATTERNS; do
         EXCLUDES="$EXCLUDES -iname $p -type f -o"
     done
-    EXCLUDES="$EXCLUDES -false"
+#    EXCLUDES="$EXCLUDES"
 fi
 
 
