@@ -1187,6 +1187,9 @@ debug "Beginning backup run..."
 cd "$BASEDIR"
 
 if isEnabled "$RELATIVE_PATH_FROM_DIRECTORY"; then
+    if ! [ -d "$BASEDIR/$BDIR" ]; then
+        cleanup 1 "$BASEDIR/$BDIR not exists. Something wrong with 'RELATIVE_PATH_FROM_DIRECTORY'"
+    fi
     cd "$BASEDIR/$BDIR"
 fi
 
