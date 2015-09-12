@@ -525,6 +525,8 @@ INCREMENTAL_STACKING="no"
 # While Tartarus will traverse into these directories, they will be included in the
 # backup, except all remained. 
 # Please read http://www.gnu.org/software/findutils/manual/html_mono/find.html#Shell-Pattern-Matching
+# and http://www.gnu.org/software/bash/manual/bashref.html#Pattern-Matching
+# We are uses GNU find syntax.
 # Example: "dir1/* *dir2* dir1/*/dir3/*"
 INCLUDE=""
 #
@@ -542,6 +544,9 @@ EXCLUDE=""
 # Files from directories specified in this list will not be included in the backups,
 # while any subdirectories beneath them will be saved, discarding the actual file content
 # but preserving the directory structure.
+# Please read http://www.gnu.org/software/findutils/manual/html_mono/find.html#Shell-Pattern-Matching
+# Do not use /* here, it's used internally.
+# Example: "mnt/disk1 lar/log"
 EXCLUDE_FILES=""
 #
 #=item EXCLUDE_FILENAME_PATTERNS
